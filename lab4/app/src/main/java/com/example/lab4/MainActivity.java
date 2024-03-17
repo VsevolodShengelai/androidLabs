@@ -27,16 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
     final String TAG = "MyLifecycleLog";
 
-    private ArrayList<TaskModel> notes = new ArrayList<TaskModel>() {
-        {
-            add(new TaskModel("Изучить работу в планировщике запросов",
-                    "Прочесть соответствующий раздел в книге по Postgres"));
-            add(new TaskModel("Научиться переписывать рекурсивные запросы",
-                    "См. видео на Ютуб и официальную доку"));
-            add(new TaskModel("Создать упражнения на рекурсивные запросы на Codewars",
-                    "Их среда исполнения вообще поддерживает рекурсивные запросы?"));
-        }
-    };
+    private ArrayList<TaskModel> notes = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,15 +45,19 @@ public class MainActivity extends AppCompatActivity {
         nextNote = (ImageButton) findViewById(R.id.nextNoteImageButton);
 
         if (savedInstanceState != null) {
-            Gson gson = new Gson();
-            String notesJson = savedInstanceState.getString("NOTES_LIST");
-            Type type = new TypeToken<ArrayList<TaskModel>>() {}.getType();
-            notes = gson.fromJson(notesJson, type);
+            MyApp app = (MyApp) getApplicationContext();
+            notes = app.getNotes();
 
             noteName.setText(savedInstanceState.getString("NOTE_NAME"));
             noteDescription.setText(savedInstanceState.getString("NOTE_DESCRIPTION"));
-
             currentId = savedInstanceState.getInt("CURRENT_ID");
+        } else {
+            notes.add(new TaskModel("Изучить работу в планировщике запросов",
+                    "Прочесть соответствующий раздел в книге по Postgres"));
+            notes.add(new TaskModel("Научиться переписывать рекурсивные запросы",
+                    "См. видео на Ютуб и официальную доку"));
+            notes.add(new TaskModel("Создать упражнения на рекурсивные запросы на Codewars",
+                    "Их среда исполнения вообще поддерживает рекурсивные запросы?"));
         }
     }
 
@@ -107,16 +102,12 @@ public class MainActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
         Log.d(TAG, "onSaveInstanceState MainActivity вызван");
 
-        Gson gson = new Gson();
-        String notesJson = gson.toJson(notes);
-        outState.putString("NOTES_LIST", notesJson);
+        MyApp app = (MyApp) getApplicationContext();
+        app.setNotes(notes);
 
         outState.putString("NOTE_NAME", noteName.getText().toString());
         outState.putString("NOTE_DESCRIPTION", noteDescription.getText().toString());
-
         outState.putInt("CURRENT_ID", currentId);
-
-        Log.d(TAG, "Serialized notes list: " + notesJson);
     }
 
     private void showToast(String text) {
