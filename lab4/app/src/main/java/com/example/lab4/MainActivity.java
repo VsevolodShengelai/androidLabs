@@ -12,7 +12,10 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.lab4.models.TaskModel;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -35,13 +38,12 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-        Log.d(TAG, "onCreate() MainActivity вызван, savedInstance="+savedInstanceState);
+        Log.d(TAG, "onCreate() MainActivity вызван, savedInstance=" + savedInstanceState);
 
         noteName = (EditText) findViewById(R.id.noteNameEditText);
         noteDescription = (EditText) findViewById(R.id.noteDescriptionEditText);
@@ -50,6 +52,18 @@ public class MainActivity extends AppCompatActivity {
         showLastNoteButton = (Button) findViewById(R.id.showLastNoteButton);
         prevNote = (ImageButton) findViewById(R.id.prevNoteImageButton);
         nextNote = (ImageButton) findViewById(R.id.nextNoteImageButton);
+
+        if (savedInstanceState != null) {
+            Gson gson = new Gson();
+            String notesJson = savedInstanceState.getString("NOTES_LIST");
+            Type type = new TypeToken<ArrayList<TaskModel>>() {}.getType();
+            notes = gson.fromJson(notesJson, type);
+
+            noteName.setText(savedInstanceState.getString("NOTE_NAME"));
+            noteDescription.setText(savedInstanceState.getString("NOTE_DESCRIPTION"));
+
+            currentId = savedInstanceState.getInt("CURRENT_ID");
+        }
     }
 
     @Override
@@ -92,6 +106,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Log.d(TAG, "onSaveInstanceState MainActivity вызван");
+
+        Gson gson = new Gson();
+        String notesJson = gson.toJson(notes);
+        outState.putString("NOTES_LIST", notesJson);
+
+        outState.putString("NOTE_NAME", noteName.getText().toString());
+        outState.putString("NOTE_DESCRIPTION", noteDescription.getText().toString());
+
+        outState.putInt("CURRENT_ID", currentId);
+
+        Log.d(TAG, "Serialized notes list: " + notesJson);
     }
 
     private void showToast(String text) {
@@ -120,11 +145,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showLastNoteButtonClick(View view) {
-        int lastId = TaskModel.getLastId();
-        currentId = lastId;
+        currentId = notes.size() - 1;
 
-        noteName.setText(notes.get(lastId).getName());
-        noteDescription.setText(notes.get(lastId).getDescription());
+        noteName.setText(notes.get(currentId).getName());
+        noteDescription.setText(notes.get(currentId).getDescription());
     }
 
     public void addButtonClick(View view) {
@@ -133,8 +157,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (noteNameContent.isEmpty() || noteDescriptionContent.isEmpty()) {
             showToast("Имя заметки и описание не могут быть пустыми!");
-        }
-        else{
+        } else {
             notes.add(new TaskModel(noteNameContent, noteDescriptionContent));
             showToast("Заметка добавлена успешно!");
         }
