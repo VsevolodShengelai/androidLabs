@@ -1,0 +1,8 @@
+<resources>
+    <string name="note_name">Название</string>
+    <string name="note_description">Описание</string>
+    <string name="app_name">lab3</string>
+    <string name="add_note">Добавить</string>
+    <string name="edit_note">Сохранить</string>
+    <string name="show_last_note">Показать последнюю заметку</string>
+</resources>
