@@ -1,4 +1,4 @@
-package com.example.lab4;
+package com.example.lab5;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -11,7 +11,7 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.lab4.models.TaskModel;
+import com.example.lab5.models.TaskModel;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package com.example.lab4.models;
+package com.example.lab5.models;
 
 public class TaskModel {
     private String name;
