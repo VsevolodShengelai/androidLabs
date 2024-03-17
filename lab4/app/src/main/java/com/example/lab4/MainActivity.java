@@ -1,6 +1,7 @@
 package com.example.lab4;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,6 +22,8 @@ public class MainActivity extends AppCompatActivity {
 
     int currentId = -1;
 
+    final String TAG = "MyLifecycleLog";
+
     private ArrayList<TaskModel> notes = new ArrayList<TaskModel>() {
         {
             add(new TaskModel("Изучить работу в планировщике запросов",
@@ -38,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+        Log.d(TAG, "onCreate() MainActivity вызван, savedInstance="+savedInstanceState);
 
         noteName = (EditText) findViewById(R.id.noteNameEditText);
         noteDescription = (EditText) findViewById(R.id.noteDescriptionEditText);
@@ -46,6 +50,48 @@ public class MainActivity extends AppCompatActivity {
         showLastNoteButton = (Button) findViewById(R.id.showLastNoteButton);
         prevNote = (ImageButton) findViewById(R.id.prevNoteImageButton);
         nextNote = (ImageButton) findViewById(R.id.nextNoteImageButton);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart() MainActivity вызван");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume() MainActivity вызван");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause() MainActivity вызван");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d(TAG, "onStop() MainActivity вызван");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy() MainActivity вызван");
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.d(TAG, "onRestart() MainActivity вызван");
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.d(TAG, "onSaveInstanceState MainActivity вызван");
     }
 
     private void showToast(String text) {
