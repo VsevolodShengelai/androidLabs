@@ -23,7 +23,8 @@ public class MainActivity extends AppCompatActivity {
 
     int currentId = -1;
 
-    public static final int EDIT_NOTE_REQUEST = 1; // Код запроса
+    public static final int EDIT_NOTE_REQUEST = 1; // Код запроса редактирования заметки
+    public static final int ADD_NOTE_REQUEST = 2; // Код запроса создания заметки
 
     final String TAG = "MyLifecycleLog";
 
@@ -143,20 +144,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void addButtonClick(View view) {
-        String noteNameContent = noteName.getText().toString().trim();
-        String noteDescriptionContent = noteDescription.getText().toString().trim();
-
-        if (noteNameContent.isEmpty() || noteDescriptionContent.isEmpty()) {
-            showToast("Имя заметки и описание не могут быть пустыми!");
-        } else {
-            notes.add(new TaskModel(noteNameContent, noteDescriptionContent));
-            showToast("Заметка добавлена успешно!");
-        }
-
-        noteName.setText("");
-        noteDescription.setText("");
-
-        currentId = notes.size() - 1;
+        Intent intent = new Intent(this, EditActivity.class);
+        intent.putExtra("ACTION_TYPE", "add");
+        startActivityForResult(intent, ADD_NOTE_REQUEST);
     }
 
     public void editButtonClick(View view) {
@@ -165,6 +155,7 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("NOTE_NAME", noteName.getText().toString());
             intent.putExtra("NOTE_DESCRIPTION", noteDescription.getText().toString());
             intent.putExtra("CURRENT_ID", currentId);
+            intent.putExtra("ACTION_TYPE", "edit");
             startActivityForResult(intent, EDIT_NOTE_REQUEST);
         } else {
             showToast("Пожалуйста, выберите заметку для редактирования!");
@@ -186,6 +177,19 @@ public class MainActivity extends AppCompatActivity {
                 TaskModel updatedTask = notes.get(currentId);
                 updatedTask.setName(name);
                 updatedTask.setDescription(description);
+            }
+        }
+
+        if (requestCode == ADD_NOTE_REQUEST && resultCode == RESULT_OK) {
+            if (data != null) {
+                String name = data.getStringExtra("RESULT_NOTE_NAME");
+                String description = data.getStringExtra("RESULT_NOTE_DESCRIPTION");
+
+                noteName.setText(name);
+                noteDescription.setText(description);
+
+                notes.add(new TaskModel(name,description));
+                currentId = notes.size() - 1;
             }
         }
     }

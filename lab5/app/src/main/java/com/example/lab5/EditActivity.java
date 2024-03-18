@@ -13,6 +13,7 @@ public class EditActivity extends AppCompatActivity {
 
     EditText noteName, noteDescription;
     int currentId = -1;
+    String actionType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,9 +25,13 @@ public class EditActivity extends AppCompatActivity {
         noteDescription = findViewById(R.id.noteDescriptionEditText);
 
         Bundle arguments = getIntent().getExtras();
-        noteName.setText(arguments.get("NOTE_NAME").toString());
-        noteDescription.setText(arguments.get("NOTE_DESCRIPTION").toString());
-        currentId = arguments.getInt("CURRENT_ID");
+
+        actionType = arguments.getString("ACTION_TYPE");
+        if (actionType == "edit"){
+            noteName.setText(arguments.get("NOTE_NAME").toString());
+            noteDescription.setText(arguments.get("NOTE_DESCRIPTION").toString());
+            currentId = arguments.getInt("CURRENT_ID");
+        }
     }
 
     private void showToast(String text) {
@@ -38,19 +43,29 @@ public class EditActivity extends AppCompatActivity {
         String noteNameContent = noteName.getText().toString().trim();
         String noteDescriptionContent = noteDescription.getText().toString().trim();
 
-        showToast(String.valueOf(currentId));
-
-        if (noteNameContent.isEmpty() || noteDescriptionContent.isEmpty()) {
-            showToast("Имя заметки и описание не могут быть пустыми!");
-        } else {
-            showToast("Заметка отредактирована успешно!");
-
-            Intent returnIntent = new Intent();
-            returnIntent.putExtra("RESULT_NOTE_NAME", noteName.getText().toString());
-            returnIntent.putExtra("RESULT_NOTE_DESCRIPTION", noteDescription.getText().toString());
-            returnIntent.putExtra("RESULT_CURRENT_ID", currentId);
-            setResult(RESULT_OK, returnIntent);
-            finish();
+        if ("add".equals(actionType)) {
+            if (noteNameContent.isEmpty() || noteDescriptionContent.isEmpty()) {
+                showToast("Имя заметки и описание не могут быть пустыми!");
+            } else {
+                showToast("Заметка создана успешно!");
+                Intent returnIntent = new Intent();
+                returnIntent.putExtra("RESULT_NOTE_NAME", noteName.getText().toString());
+                returnIntent.putExtra("RESULT_NOTE_DESCRIPTION", noteDescription.getText().toString());
+                setResult(RESULT_OK, returnIntent);
+                finish();
+            }
+        } else if ("edit".equals(actionType)) {
+            if (noteNameContent.isEmpty() || noteDescriptionContent.isEmpty()) {
+                showToast("Имя заметки и описание не могут быть пустыми!");
+            } else {
+                showToast("Заметка отредактирована успешно!");
+                Intent returnIntent = new Intent();
+                returnIntent.putExtra("RESULT_NOTE_NAME", noteName.getText().toString());
+                returnIntent.putExtra("RESULT_NOTE_DESCRIPTION", noteDescription.getText().toString());
+                returnIntent.putExtra("RESULT_CURRENT_ID", currentId);
+                setResult(RESULT_OK, returnIntent);
+                finish();
+            }
         }
     }
 }
