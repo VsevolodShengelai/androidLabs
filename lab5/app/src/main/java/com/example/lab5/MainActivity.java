@@ -1,11 +1,12 @@
 package com.example.lab5;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -16,11 +17,13 @@ import com.example.lab5.models.TaskModel;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    EditText noteName, noteDescription;
+    TextView noteName, noteDescription;
     Button addNoteButton, saveNoteButton, showLastNoteButton;
     ImageButton prevNote, nextNote;
 
     int currentId = -1;
+
+    public static final int EDIT_NOTE_REQUEST = 1; // Код запроса
 
     final String TAG = "MyLifecycleLog";
 
@@ -33,13 +36,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Log.d(TAG, "onCreate() MainActivity вызван, savedInstance=" + savedInstanceState);
 
-        noteName = (EditText) findViewById(R.id.noteNameEditText);
-        noteDescription = (EditText) findViewById(R.id.noteDescriptionEditText);
-        addNoteButton = (Button) findViewById(R.id.addNoteButton);
-        saveNoteButton = (Button) findViewById(R.id.editNoteButton);
-        showLastNoteButton = (Button) findViewById(R.id.showLastNoteButton);
-        prevNote = (ImageButton) findViewById(R.id.prevNoteImageButton);
-        nextNote = (ImageButton) findViewById(R.id.nextNoteImageButton);
+        noteName = findViewById(R.id.noteNameEditText);
+        noteDescription = findViewById(R.id.noteDescriptionEditText);
+        addNoteButton = findViewById(R.id.addNoteButton);
+        saveNoteButton = findViewById(R.id.editNoteButton);
+        showLastNoteButton = findViewById(R.id.showLastNoteButton);
+        prevNote = findViewById(R.id.prevNoteImageButton);
+        nextNote = findViewById(R.id.nextNoteImageButton);
 
         if (savedInstanceState != null) {
             MyApp app = (MyApp) getApplicationContext();
@@ -157,24 +160,33 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void editButtonClick(View view) {
-        String noteNameContent = noteName.getText().toString().trim();
-        String noteDescriptionContent = noteDescription.getText().toString().trim();
-
-        // Проверяем, выбрана ли заметка для редактирования
         if (currentId >= 0 && currentId < notes.size()) {
-            // Проверяем, не пустые ли поля ввода
-            if (noteNameContent.isEmpty() || noteDescriptionContent.isEmpty()) {
-                showToast("Имя заметки и описание не могут быть пустыми!");
-            } else {
-                // Обновляем имя и описание текущей заметки
-                TaskModel task = notes.get(currentId);
-                task.setName(noteNameContent);
-                task.setDescription(noteDescriptionContent);
-                showToast("Заметка обновлена успешно!");
-            }
+            Intent intent = new Intent(this, EditActivity.class);
+            intent.putExtra("NOTE_NAME", noteName.getText().toString());
+            intent.putExtra("NOTE_DESCRIPTION", noteDescription.getText().toString());
+            intent.putExtra("CURRENT_ID", currentId);
+            startActivityForResult(intent, EDIT_NOTE_REQUEST);
         } else {
             showToast("Пожалуйста, выберите заметку для редактирования!");
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == EDIT_NOTE_REQUEST && resultCode == RESULT_OK) {
+            if (data != null) {
+                String name = data.getStringExtra("RESULT_NOTE_NAME");
+                String description = data.getStringExtra("RESULT_NOTE_DESCRIPTION");
+
+                noteName.setText(name);
+                noteDescription.setText(description);
+                currentId = data.getIntExtra("RESULT_CURRENT_ID", -1);
+
+                TaskModel updatedTask = notes.get(currentId);
+                updatedTask.setName(name);
+                updatedTask.setDescription(description);
+            }
+        }
+    }
 }
