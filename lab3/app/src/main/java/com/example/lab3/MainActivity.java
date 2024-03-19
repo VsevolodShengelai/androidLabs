@@ -68,7 +68,11 @@ public class MainActivity extends AppCompatActivity {
             currentId += 1;
             noteName.setText(notes.get(currentId).getName());
             noteDescription.setText(notes.get(currentId).getDescription());
-        } else {
+        } else if ((currentId == notes.size()-1) || (currentId == -1)) {
+            noteName.setText(notes.get(currentId).getName());
+            noteDescription.setText(notes.get(currentId).getDescription());
+        }
+        else {
             showToast("Текущая заметка - последняя");
         }
     }

@@ -27,7 +27,7 @@ public class EditActivity extends AppCompatActivity {
         Bundle arguments = getIntent().getExtras();
 
         actionType = arguments.getString("ACTION_TYPE");
-        if (actionType == "edit"){
+        if ("edit".equals(actionType)){
             noteName.setText(arguments.get("NOTE_NAME").toString());
             noteDescription.setText(arguments.get("NOTE_DESCRIPTION").toString());
             currentId = arguments.getInt("CURRENT_ID");
