@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/noteNameEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:hint="@string/note_name"
+        android:minHeight="60dp"
+        android:paddingStart="52dp"
+        android:paddingEnd="52dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/noteDescriptionEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="8dp"
+        android:hint="@string/note_description"
+        android:minHeight="60dp"
+        android:paddingStart="52dp"
+        android:paddingEnd="52dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/noteNameEditText" />
+
+    <Button
+        android:id="@+id/addNoteButton"
+        android:layout_width="176dp"
+        android:layout_height="55dp"
+        android:layout_marginStart="140dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="8dp"
+        android:onClick="addButtonClick"
+        android:text="@string/add_note"
+        app:cornerRadius="8dp"
+        app:layout_constraintBottom_toTopOf="@id/prevNoteImageButton"
+        app:layout_constraintEnd_toStartOf="@id/editNoteButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/noteDescriptionEditText" />
+
+    <Button
+        android:id="@+id/editNoteButton"
+        android:layout_width="176dp"
+        android:layout_height="55dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="140dp"
+        android:onClick="editButtonClick"
+        android:text="@string/edit_note"
+        app:cornerRadius="8dp"
+        app:layout_constraintBottom_toTopOf="@id/nextNoteImageButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/addNoteButton"
+        app:layout_constraintTop_toBottomOf="@id/noteDescriptionEditText" />
+
+    <ImageButton
+        android:id="@+id/prevNoteImageButton"
+        android:layout_width="176dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="140dp"
+        android:layout_marginTop="-20dp"
+        android:layout_marginEnd="8dp"
+        android:backgroundTint="#6750A3"
+        android:onClick="previousNoteButtonClick"
+        app:layout_constraintBottom_toTopOf="@id/showLastNoteButton"
+        app:layout_constraintEnd_toStartOf="@id/nextNoteImageButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/addNoteButton"
+        app:srcCompat="@drawable/arrow_left_24" />
+
+    <ImageButton
+        android:id="@+id/nextNoteImageButton"
+        android:layout_width="176dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="-20dp"
+        android:layout_marginEnd="140dp"
+        android:backgroundTint="#6750A3"
+        android:onClick="nextNoteButtonClick"
+        app:layout_constraintBottom_toTopOf="@id/showLastNoteButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/prevNoteImageButton"
+        app:layout_constraintTop_toBottomOf="@id/editNoteButton"
+        app:srcCompat="@drawable/arrow_right_24" />
+
+    <Button
+        android:id="@+id/showLastNoteButton"
+        android:layout_width="380dp"
+        android:layout_height="58dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="18dp"
+        android:onClick="showLastNoteButtonClick"
+        android:text="@string/show_last_note"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.915" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
