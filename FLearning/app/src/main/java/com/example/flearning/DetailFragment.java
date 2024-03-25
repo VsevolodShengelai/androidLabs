@@ -9,13 +9,16 @@ import androidx.fragment.app.Fragment;
 
 public class DetailFragment extends Fragment {
 
+    /*Этот фрагмент никому ничего не отправляет,
+    * в нём реализован единственный метод обновления данных*/
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_detail, container, false);
     }
 
-    // обновление текстового поля
+    // Обновление текстового поля фрагментом
     public void setSelectedItem(String selectedItem) {
         TextView view = getView().findViewById(R.id.detailsText);
         view.setText(selectedItem);

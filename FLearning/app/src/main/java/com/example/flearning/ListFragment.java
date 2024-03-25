@@ -11,6 +11,11 @@ import android.widget.ListView;
 import androidx.fragment.app.Fragment;
 
 public class ListFragment extends Fragment {
+
+    /*Фрагменты не могут напрямую взаимодействовать между собой
+    * Для этого им нужен контекст, которым выступает класс Activity
+    *
+    * Для обращения к Activity создаём вложенный интерфейс*/
     interface OnFragmentSendDataListener {
         void onSendData(String data);
     }
@@ -46,9 +51,8 @@ public class ListFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View v, int position, long id)
             {
-                // получаем выбранный элемент
                 String selectedItem = (String)parent.getItemAtPosition(position);
-                // Посылаем данные Activity
+                /*Отправка данных Activity*/
                 fragmentSendDataListener.onSendData(selectedItem);
             }
         });

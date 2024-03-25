@@ -3,6 +3,11 @@ package com.example.flearning;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
+
+/*Activity реализует интерфейс OnFragmentSendDataListener,
+* для взаимодействия фрагмента ListFragment с другим фрагментом через MainActivity
+*
+* Здесь мы реализуем метод onSendData() интерфейса*/
 public class MainActivity extends AppCompatActivity  implements ListFragment.OnFragmentSendDataListener {
 
     @Override
